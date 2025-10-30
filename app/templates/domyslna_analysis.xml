@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnalysisTemplate municipality="Gmina Domyślna" version="1.0">
+  <Location>{{wniosek_gmina}}, dnia {{wniosek_data}}</Location>
+  
+  <Header>
+    <Title>ANALIZA</Title>
+    <Subtitle>funkcji oraz cech zabudowy i zagospodarowania terenu w zakresie warunków, o których mowa w art. 61 ust. 1–6 ustawy o planowaniu i zagospodarowaniu przestrzennym</Subtitle>
+    <LegalBase>
+      przeprowadzona na podstawie art. 61 ust. 5a Ustawy o planowaniu i zagospodarowaniu przestrzennym (t.j. Dz.U. z 2024 r. poz. 1130 ze zm.) oraz §11 Rozporządzenia Ministra Rozwoju i Technologii z dnia 15 lipca 2024 r. w sprawie sposobu ustalenia wymagań dotyczących nowej zabudowy i zagospodarowania terenu w przypadku braku miejscowego planu zagospodarowania przestrzennego (Dz.U. z 2024 r. poz. 1116).
+    </LegalBase>
+  </Header>
+
+  <Case>
+    <CaseNumber>{{case_number}}</CaseNumber>
+    <Plots>na terenie części działki o nr ewid. {{wniosek_dzialki}}, obręb {{wniosek_obreb}}, Gmina {{wniosek_gmina}}</Plots>
+  </Case>
+
+  <Section id="wnioskodawca" title="Dane wnioskodawcy">
+    <Paragraph>Wnioskodawca: {{wniosek_wnioskodawca_mianownik}}</Paragraph>
+    <Paragraph>Adres: {{wniosek_wnioskodawca_adres}}</Paragraph>
+  </Section>
+
+  <Section id="rodzaj_inwestycji" title="Rodzaj inwestycji">
+    <Paragraph>{{wniosek_rodzaj_inwestycji}}</Paragraph>
+    <Paragraph>{{wniosek_opis_inwestycji}}</Paragraph>
+  </Section>
+
+  <Section id="zabudowa" title="Parametry zabudowy">
+    <Paragraph>Rodzaj zabudowy: {{wniosek_rodzaj_zabudowy}}</Paragraph>
+    <Paragraph>Linia zabudowy: {{wniosek_linia_zabudowy}}</Paragraph>
+    <Paragraph>Szerokość elewacji frontowej: {{wniosek_szerokosc_elewacji_frontowej}}</Paragraph>
+    <Paragraph>Wysokość zabudowy: {{wniosek_wysokosc_zabudowy}}</Paragraph>
+    <Paragraph>Liczba kondygnacji: {{wniosek_liczba_kondygnacji}}</Paragraph>
+    <Paragraph>Kąt nachylenia dachu: {{wniosek_kat_nachylenia_dachu}}</Paragraph>
+  </Section>
+
+  <Section id="powierzchnie" title="Powierzchnie">
+    <Paragraph>Powierzchnia zabudowy: {{wniosek_powierzchnia_zabudowy}}</Paragraph>
+    <Paragraph>Powierzchnia biologicznie czynna: {{wniosek_powierzchnia_biologicznie_czynna}}</Paragraph>
+    <Paragraph>Intensywność zabudowy: {{wniosek_intensywnosc_zabudowy}}</Paragraph>
+    <Paragraph>Miejsca parkingowe: {{wniosek_miejsca_parkingowe}}</Paragraph>
+  </Section>
+
+  <Section id="infrastruktura" title="Infrastruktura techniczna">
+    <Paragraph>Dostęp do drogi publicznej: {{wniosek_dostep_droga_publiczna}}</Paragraph>
+    <Paragraph>Zaopatrzenie w wodę: {{wniosek_woda}}</Paragraph>
+    <Paragraph>Odprowadzenie ścieków: {{wniosek_scieki}}</Paragraph>
+    <Paragraph>Odwodnienie terenu: {{wniosek_odwodnienie}}</Paragraph>
+    <Paragraph>Energia elektryczna: {{wniosek_energia_elektr}}</Paragraph>
+    <Paragraph>Gaz: {{wniosek_gaz}}</Paragraph>
+    <Paragraph>Ogrzewanie: {{wniosek_ogrzewanie}}</Paragraph>
+    <Paragraph>Gospodarka odpadami: {{wniosek_odpady}}</Paragraph>
+  </Section>
+
+  <Section id="analiza" title="Wyniki analizy">
+    <Paragraph>{{wyniki_analizy}}</Paragraph>
+  </Section>
+
+  <Section id="uzasadnienie" title="Uzasadnienie">
+    <Paragraph>{{uzasadnienie}}</Paragraph>
+  </Section>
+
+  <Section id="podstawy_prawne" title="Podstawy prawne">
+    <Paragraph>{{podstawy_prawne}}</Paragraph>
+  </Section>
+
+  <Footer>
+    <Signature>{{wniosek_podpis}}</Signature>
+    <Date>{{wniosek_data}}</Date>
+  </Footer>
+</AnalysisTemplate>

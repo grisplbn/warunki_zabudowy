@@ -1,0 +1,22 @@
+{
+  "konopnica": {
+    "name": "Konopnica",
+    "templates": {
+      "analysis": "templates/konopnica_analysis.xml",
+      "decision": "templates/konopnica_decision.xml"
+    },
+    "header": "Analiza urbanistyczna - Gmina Konopnica",
+    "intro": "Analiza funkcji oraz cech zabudowy i zagospodarowania terenu w zakresie warunków, o których mowa w art. 61 ust. 1–6 ustawy o planowaniu i zagospodarowaniu przestrzennym.",
+    "footer": "Urząd Gminy Konopnica"
+  },
+  "domyslna": {
+    "name": "Domyślna",
+    "templates": {
+      "analysis": "templates/domyslna_analysis.xml",
+      "decision": "templates/domyslna_decision.xml"
+    },
+    "header": "Analiza urbanistyczna - Gmina Domyślna",
+    "intro": "Dokument wygenerowany na podstawie danych z analizy dla Gminy Domyślnej.",
+    "footer": "Urząd Gminy Domyślna"
+  }
+}

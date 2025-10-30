@@ -1,0 +1,46 @@
+{
+  "wnioskodawca_mianownik": "Wnioskodawca - Mianownik",
+  "wnioskodawca_dopelniacz": "Wnioskodawca - Dopełniacz",
+  "wnioskodawca_adres": "Adres Wnioskodawcy",
+
+  "gmina": "Gmina",
+  "obreb": "Obręb ewidencyjny",
+  "dzialki": "Numery działek",
+  "teren_obejmuje": "Teren inwestycji obejmuje",
+  "data_wykonania_analizy": "Data wykonania analizy",
+  "data_zlozenia_wniosku": "Data złożenia wniosku",
+  "data_uzupelnienia_wniosku": "Data uzupełnienia wniosku",
+
+  "rodzaj_inwestycji": "Rodzaj/cel inwestycji",
+  "opis_inwestycji": "Opis inwestycji",
+  "rodzaj_zabudowy": "Rodzaj zabudowy",
+
+  "linia_zabudowy": "Linia zabudowy",
+  "szerokosc_elewacji_frontowej": "Szerokość elewacji frontowej",
+  "wysokosc_zabudowy": "Wysokość zabudowy",
+  "liczba_kondygnacji": "Liczba kondygnacji",
+  "kat_nachylenia_dachu": "Kąt nachylenia dachu",
+  "powierzchnia_zabudowy": "Powierzchnia zabudowy",
+  "powierzchnia_biologicznie_czynna": "Powierzchnia biologicznie czynna",
+  "intensywnosc_zabudowy": "Intensywność zabudowy",
+  "miejsca_parkingowe": "Miejsca parkingowe",
+
+  "dostep_droga_publiczna": "Dostęp do drogi publicznej",
+  "woda": "Zaopatrzenie w wodę",
+  "scieki": "Odprowadzenie ścieków",
+  "odwodnienie": "Odwodnienie terenu",
+  "energia_elektr": "Energia elektryczna",
+  "gaz": "Gaz",
+  "ogrzewanie": "Ogrzewanie",
+  "odpady": "Gospodarka odpadami",
+
+  "uwagi": "Dodatkowe uwagi",
+  "data": "Data",
+  "podpis": "Podpis",
+
+  "wyniki_analizy": "Wyniki analizy (tekst)",
+  "uzasadnienie": "Uzasadnienie (tekst)",
+  "podstawy_prawne": "Podstawy prawne (tekst)"
+}
+
+

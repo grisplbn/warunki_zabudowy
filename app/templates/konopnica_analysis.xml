@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnalysisTemplate municipality="Gmina Konopnica" version="1.0">
+  <Location>{{wniosek_gmina}}, dnia {{wniosek_data}}</Location>
+  
+  <Header>
+    <Title>ANALIZA</Title>
+    <Subtitle>funkcji oraz cech zabudowy i zagospodarowania terenu w zakresie warunków, o których mowa w art. 61 ust. 1–6 ustawy o planowaniu i zagospodarowaniu przestrzennym</Subtitle>
+    <LegalBase>
+      przeprowadzona na podstawie art. 61 ust. 5a Ustawy o planowaniu i zagospodarowaniu przestrzennym (t.j. Dz.U. z 2024 r. poz. 1130 ze zm.) oraz §11 Rozporządzenia Ministra Rozwoju i Technologii z dnia 15 lipca 2024 r. w sprawie sposobu ustalenia wymagań dotyczących nowej zabudowy i zagospodarowania terenu w przypadku braku miejscowego planu zagospodarowania przestrzennego (Dz.U. z 2024 r. poz. 1116).
+    </LegalBase>
+  </Header>
+
+  <Case>
+    <CaseNumber>{{case_number}}</CaseNumber>
+    <Plots>na terenie części działki o nr ewid. {{wniosek_dzialki}}, obręb {{wniosek_obreb}}, Gmina {{wniosek_gmina}}</Plots>
+  </Case>
+
+  <Section id="wnioskodawca" title="Dane wnioskodawcy">
+    <Paragraph>Wnioskodawca: {{wniosek_wnioskodawca_mianownik}}</Paragraph>
+    <Paragraph>Adres: {{wniosek_wnioskodawca_adres}}</Paragraph>
+  </Section>
+
+  <Section id="rodzaj_inwestycji" title="Rodzaj inwestycji">
+    <Paragraph>{{wniosek_rodzaj_inwestycji}}</Paragraph>
+    <Paragraph>{{wniosek_opis_inwestycji}}</Paragraph>
+  </Section>
+
+  <Section id="lokalizacja_inwestycji" title="Lokalizacja inwestycji">
+    <Paragraph>na terenie części działki o nr ewid. {{wniosek_dzialki}}, obręb {{wniosek_obreb}}, Gmina {{wniosek_gmina}}</Paragraph>
+  </Section>
+
+  <Section id="granice_obszaru" title="Granice obszaru przyjętego do analizy">
+    <Paragraph>
+      Ustalono na załączniku graficznym do analizy sporządzonym na mapie zasadniczej w skali 1:1000.
+      Obszar analizowany wyznaczono wokół terenu, o którym mowa w art. 52 ust. 2 pkt 1a, na kopii mapy zasadniczej
+      w skali 1:1000, w odległości nie mniejszej niż 50 m. Za front terenu przyjęto część granicy działki przylegającą
+      do drogi publicznej, z której odbywa się główny wjazd na działkę. Przyjęty obszar jest wystarczający dla
+      przeprowadzenia analizy.
+    </Paragraph>
+  </Section>
+
+  <Section id="ustalenia_art_61" title="Ustalenia analizy (art. 61 ust. 1, pkt 1–5)">
+    <Point index="I" title="Zgodnie z art. 61, ust. 1, pkt. 1">
+      <Subpoint index="a" title="funkcji zabudowy i zagospodarowania terenu">
+        <Text>{{land_use}}</Text>
+      </Subpoint>
+      <Subpoint index="b" title="cech zabudowy i zagospodarowania terenu">
+        <List>
+          <Item label="forma architektoniczna obiektów i gabaryty">{{forma_architektury}}</Item>
+          <Item label="geometria dachu">{{kat_nachylenia_dachu}}</Item>
+          <Item label="wysokość zabudowy">{{wysokosc_zabudowy}}</Item>
+          <Item label="linia zabudowy">{{linia_zabudowy}}</Item>
+          <Item label="wskaźnik powierzchni zabudowy">{{powierzchnia_zabudowy}}</Item>
+          <Item label="wskaźnik intensywności zabudowy">{{intensywnosc_zabudowy}}</Item>
+          <Item label="powierzchnia biologicznie czynna">{{powierzchnia_biologicznie_czynna}}</Item>
+        </List>
+      </Subpoint>
+    </Point>
+    <Point index="II" title="Zgodnie z art. 61, ust. 1, pkt. 2">
+      <Text>teren objęty wnioskiem posiada dostęp do drogi publicznej {{dostep_droga_publiczna}}</Text>
+    </Point>
+    <Point index="III" title="Zgodnie z art. 61, ust. 1, pkt. 3">
+      <Text>projektowane uzbrojenie terenu jest wystarczające (woda: {{woda}}, kanalizacja/ścieki: {{scieki}}, energia: {{energia_elektr}}, gaz: {{gaz}}, odwodnienie: {{odwodnienie}})</Text>
+    </Point>
+    <Point index="IV" title="Zgodnie z art. 61, ust. 1, pkt. 4">
+      <Text>zgodnie z wypisem z rejestru gruntów teren nie jest objęty ochroną uniemożliwiającą realizację inwestycji</Text>
+    </Point>
+    <Point index="V" title="Zgodnie z art. 61, ust. 1, pkt. 5">
+      <Text>wszelkie zagospodarowanie winno być zgodne z przepisami odrębnymi</Text>
+    </Point>
+  </Section>
+
+  <Section id="wyniki" title="Wyniki analizy">
+    <Paragraph>{{wyniki_analizy}}</Paragraph>
+  </Section>
+
+  <Section id="konkluzja" title="Konkluzja">
+    <Paragraph>Projektowana inwestycja spełnia łącznie warunki umożliwiające wydanie decyzji o warunkach zabudowy, określone w art. 61 ust. 1 ustawy o planowaniu i zagospodarowaniu przestrzennym.</Paragraph>
+  </Section>
+
+  <Annex title="Załącznik graficzny">
+    <Text>Integralną częścią analizy jest załącznik graficzny do analizy sporządzony na mapie w skali 1:1000.</Text>
+  </Annex>
+
+  <Footer>
+    <SignLine>......................................................</SignLine>
+    <SignHint>podpis osoby sporządzającej analizę</SignHint>
+  </Footer>
+</AnalysisTemplate>
+
+

@@ -1,0 +1,602 @@
+{% extends "base.html" %}
+{% block title %}Formularz analizy - WZ{% endblock %}
+{% block content %}
+<div class="panel sticky-panel">
+  <h3 style="margin: 0 0 12px; font-size: 16px; font-weight: 600;">Zapisz / Wczytaj sprawę</h3>
+  <div class="actions">
+    <button id="save-case" class="btn">Zapisz sprawę (JSON)</button>
+    <form method="post" action="/load-case" enctype="multipart/form-data" style="display:inline-block">
+      <input type="file" name="file" accept="application/json" required id="file-input" style="display:none" onchange="document.getElementById('file-name').textContent = this.files[0]?.name || 'Nie wybrano pliku'" />
+      <label for="file-input" class="btn" style="cursor:pointer; margin-right:8px;">Wybierz plik</label>
+      <span id="file-name" style="color: #6b7280; font-size: 14px; margin-right: 8px;">Nie wybrano pliku</span>
+      <button type="submit" class="btn">Wczytaj sprawę</button>
+    </form>
+  </div>
+  <div class="actions" style="margin-top: 8px;">
+    <button id="save-to-memory" class="btn">Zapisz w pamięci</button>
+    <button id="load-from-memory" class="btn">Wczytaj z pamięci</button>
+  </div>
+</div>
+
+{% if validation_errors %}
+<div class="panel" style="margin-bottom: 16px; border-color: #dc2626; background: #fef2f2;">
+  <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 600; color: #dc2626;">Błędy walidacji:</h3>
+  <ul style="margin: 0; padding-left: 20px; color: #dc2626;">
+    {% for error in validation_errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<div class="two-col">
+  <form method="post" action="/compare" class="panel">
+    <h2>Wniosek</h2>
+    
+    <!-- Sekcja: Metryka sprawy -->
+    <div class="section">
+      <h3>Metryka sprawy</h3>
+      <div class="field">
+        <label for="gmina" class="required">Gmina:</label>
+        <select name="gmina" id="gmina" required>
+          {% for g in gminas %}
+            <option value="{{ g }}" {% if selected_gmina == g %}selected{% endif %}>{{ g }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="case_number" class="required">Numer sprawy:</label>
+        <input type="text" id="case_number" name="case_number" placeholder="np. BK.6730.1.1.2025" value="{{ case_number or '' }}" required />
+      </div>
+      <div class="field">
+        <label for="data_wykonania_analizy_wniosek" class="required">Data wykonania analizy:</label>
+        <input type="date" id="data_wykonania_analizy_wniosek" name="data_wykonania_analizy_wniosek" value="{{ comparison['data_wykonania_analizy'].wniosek if comparison and comparison.get('data_wykonania_analizy') else '' }}" required />
+      </div>
+      <div class="field">
+        <label for="data_zlozenia_wniosku_wniosek" class="required">Data złożenia wniosku:</label>
+        <input type="date" id="data_zlozenia_wniosku_wniosek" name="data_zlozenia_wniosku_wniosek" value="{{ comparison['data_zlozenia_wniosku'].wniosek if comparison and comparison.get('data_zlozenia_wniosku') else '' }}" required />
+        <span class="note" id="data_validation_note" style="color: var(--red); font-size: 12px; margin-top: 4px;"></span>
+      </div>
+      <div class="field">
+        <label>Data uzupełnienia wniosku:</label>
+        <div id="data-uzupelnienia-container">
+          <input type="date" name="data_uzupelnienia_wniosku_wniosek" />
+        </div>
+        <button type="button" class="btn-add-data-uzupelnienia" style="margin-top: 8px; padding: 6px 12px; font-size: 12px;">Dodaj kolejną datę</button>
+      </div>
+    </div>
+    
+    <!-- Sekcja: Dane wnioskodawcy/pełnomocnika -->
+    <div class="section">
+      <h3>Dane wnioskodawcy/pełnomocnika</h3>
+      {% for key, label in labels.items() %}
+        {% if key in ['wnioskodawca_mianownik', 'wnioskodawca_dopelniacz', 'wnioskodawca_adres'] %}
+          <div class="field">
+            <label{% if key in ['wnioskodawca_mianownik', 'wnioskodawca_dopelniacz', 'wnioskodawca_adres'] %} class="required"{% endif %}>{{ label }}</label>
+            {% if key == 'wnioskodawca_mianownik' %}
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" name="wnioskodawca_title_wniosek" value="Pan" {% if comparison and comparison.get(key) and comparison[key].wniosek and 'Pan' in comparison[key].wniosek %}checked{% endif %} />
+                  Pan
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="wnioskodawca_title_wniosek" value="Pani" {% if comparison and comparison.get(key) and comparison[key].wniosek and 'Pani' in comparison[key].wniosek %}checked{% endif %} />
+                  Pani
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="wnioskodawca_title_wniosek" value="Państwo" {% if comparison and comparison.get(key) and comparison[key].wniosek and 'Państwo' in comparison[key].wniosek %}checked{% endif %} />
+                  Państwo
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="wnioskodawca_title_wniosek" value="Podmiot" {% if comparison and comparison.get(key) and comparison[key].wniosek and 'Podmiot' in comparison[key].wniosek %}checked{% endif %} />
+                  Podmiot
+                </label>
+              </div>
+              <input type="text" name="{{ key }}_wniosek" value="{{ comparison[key].wniosek if comparison and comparison.get(key) else '' }}" placeholder="np. Jan Kowalski" />
+            {% elif key == 'wnioskodawca_dopelniacz' %}
+              <input type="text" name="{{ key }}_wniosek" value="{{ comparison[key].wniosek if comparison and comparison.get(key) else '' }}" placeholder="np. Jana Kowalskiego" />
+            {% elif key == 'wnioskodawca_adres' %}
+              <input type="text" name="{{ key }}_wniosek" value="{{ comparison[key].wniosek if comparison and comparison.get(key) else '' }}" placeholder="np. ul. Łanowa 45/67, 20-568 Lublin" />
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Sekcja: Teren Objęty wnioskiem -->
+    <div class="section">
+      <h3>Teren Objęty wnioskiem</h3>
+      {% for key, label in labels.items() %}
+        {% if key in ['gmina', 'obreb', 'dzialki', 'teren_obejmuje'] %}
+          <div class="field">
+            <label{% if key in ['gmina', 'obreb', 'dzialki', 'teren_obejmuje'] %} class="required"{% endif %}>{{ label }}</label>
+            {% if key == 'gmina' %}
+              <input type="text" name="{{ key }}_wniosek" value="{{ selected_gmina or (gminas[0] if gminas) or '' }}" readonly style="background: #f3f4f6;" />
+              <span class="note" style="color: #6b7280; font-size: 11px;">(Wypełniane automatycznie z wyboru gminy)</span>
+            {% elif key == 'dzialki' %}
+              <div id="dzialki-container">
+                <input type="text" name="dzialki_wniosek" value="{{ comparison[key].wniosek if comparison else '' }}" placeholder="np. 123/4" />
+                <button type="button" class="btn-add-dzialka" style="margin-left: 8px; padding: 6px 12px; font-size: 12px;">Dodaj kolejną działkę</button>
+              </div>
+            {% elif key == 'teren_obejmuje' %}
+              <select name="{{ key }}_wniosek" required>
+                <option value="cala" {% if comparison and comparison.get(key) and comparison[key].wniosek == 'cala' %}selected{% endif %}>CAŁĄ działkę/działki</option>
+                <option value="czesc" {% if comparison and comparison.get(key) and comparison[key].wniosek == 'czesc' %}selected{% endif %}>CZĘŚĆ działki/działek</option>
+              </select>
+            {% elif key in long_text_keys %}
+              <textarea name="{{ key }}_wniosek" rows="6">{{ comparison[key].wniosek if comparison else '' }}</textarea>
+            {% else %}
+              <input type="text" name="{{ key }}_wniosek" value="{{ comparison[key].wniosek if comparison else '' }}" />
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Pozostałe pola -->
+    {% for key, label in labels.items() %}
+      {% if key not in ['wnioskodawca_mianownik', 'wnioskodawca_dopelniacz', 'wnioskodawca_adres', 'gmina', 'obreb', 'dzialki', 'teren_obejmuje', 'data_wykonania_analizy', 'data_zlozenia_wniosku', 'data_uzupelnienia_wniosku'] %}
+        <div class="field">
+          <label>{{ label }}</label>
+          {% if key in long_text_keys %}
+            <textarea name="{{ key }}_wniosek" rows="6">{{ comparison[key].wniosek if comparison else '' }}</textarea>
+          {% else %}
+            <input type="text" name="{{ key }}_wniosek" value="{{ comparison[key].wniosek if comparison else '' }}" />
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </form>
+
+  <form method="post" action="/generate-docx" class="panel">
+    <input type="hidden" name="gmina" value="{{ selected_gmina or (gminas[0] if gminas) }}" />
+    <input type="hidden" name="case_number" value="{{ case_number or '' }}" />
+    <h2>Wynik analizy</h2>
+    
+    <!-- Sekcja: Metryka sprawy (Analiza) -->
+    <div class="section">
+      <h3>Metryka sprawy</h3>
+      <div class="field" style="opacity: 0.7;">
+        <label for="data_wykonania_analizy_analiza" class="required">Data wykonania analizy:</label>
+        <input type="text" value="{{ comparison['data_wykonania_analizy'].wniosek if comparison and comparison.get('data_wykonania_analizy') else '' }}" readonly style="background: #f3f4f6;" />
+        <span class="note" style="color: #6b7280; font-size: 11px;">(Kopiowane z wniosku)</span>
+      </div>
+      <div class="field" style="opacity: 0.7;">
+        <label for="data_zlozenia_wniosku_analiza" class="required">Data złożenia wniosku:</label>
+        <input type="text" value="{{ comparison['data_zlozenia_wniosku'].wniosek if comparison and comparison.get('data_zlozenia_wniosku') else '' }}" readonly style="background: #f3f4f6;" />
+        <span class="note" style="color: #6b7280; font-size: 11px;">(Kopiowane z wniosku)</span>
+      </div>
+      <div class="field" style="opacity: 0.7;">
+        <label>Data uzupełnienia wniosku:</label>
+        <input type="text" value="{{ comparison['data_uzupelnienia_wniosku'].wniosek if comparison and comparison.get('data_uzupelnienia_wniosku') else '' }}" readonly style="background: #f3f4f6;" />
+        <span class="note" style="color: #6b7280; font-size: 11px;">(Kopiowane z wniosku)</span>
+      </div>
+    </div>
+    
+    <!-- Sekcja: Dane wnioskodawcy/pełnomocnika -->
+    <div class="section">
+      <h3>Dane wnioskodawcy/pełnomocnika</h3>
+      {% for key, label in labels.items() %}
+        {% if key in ['wnioskodawca_mianownik', 'wnioskodawca_dopelniacz', 'wnioskodawca_adres'] %}
+          {% if key in wniosek_only_keys %}
+            {# Pola "tylko wniosek" - pokazuj tylko wartość z wniosku (read-only) #}
+            <div class="field" style="opacity: 0.7;">
+              <label>{{ label }}</label>
+              <input type="text" value="{{ comparison[key].wniosek if comparison and comparison.get(key) else '' }}" readonly style="background: #f3f4f6;" />
+              <span class="note" style="color: #6b7280; font-size: 11px;">(Kopiowane z wniosku)</span>
+            </div>
+          {% else %}
+            {% set mismatch = comparison and (not comparison[key].match) %}
+            <div class="field {% if mismatch %}mismatch{% endif %}">
+              <label{% if key in ['wnioskodawca_mianownik', 'wnioskodawca_dopelniacz', 'wnioskodawca_adres'] %} class="required"{% endif %}>{{ label }}</label>
+              {% if key == 'wnioskodawca_mianownik' %}
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="{{ key }}_title_analiza" value="Pan" {% if comparison and comparison.get(key) and comparison[key].analiza and 'Pan' in comparison[key].analiza %}checked{% endif %} />
+                    Pan
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="{{ key }}_title_analiza" value="Pani" {% if comparison and comparison.get(key) and comparison[key].analiza and 'Pani' in comparison[key].analiza %}checked{% endif %} />
+                    Pani
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="{{ key }}_title_analiza" value="Państwo" {% if comparison and comparison.get(key) and comparison[key].analiza and 'Państwo' in comparison[key].analiza %}checked{% endif %} />
+                    Państwo
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="{{ key }}_title_analiza" value="Podmiot" {% if comparison and comparison.get(key) and comparison[key].analiza and 'Podmiot' in comparison[key].analiza %}checked{% endif %} />
+                    Podmiot
+                  </label>
+                </div>
+                <input type="text" name="{{ key }}_analiza" value="{{ comparison[key].analiza if comparison and comparison.get(key) else '' }}" placeholder="np. Jan Kowalski" />
+              {% elif key in long_text_keys %}
+                <textarea name="{{ key }}_analiza" rows="6">{{ comparison[key].analiza if comparison else '' }}</textarea>
+              {% else %}
+                <input type="text" name="{{ key }}_analiza" value="{{ comparison[key].analiza if comparison else '' }}" />
+              {% endif %}
+              {% if mismatch %}<span class="note">Różni się od wniosku</span>{% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Sekcja: Teren Objęty wnioskiem -->
+    <div class="section">
+      <h3>Teren Objęty wnioskiem</h3>
+      {% for key, label in labels.items() %}
+        {% if key in ['gmina', 'obreb', 'dzialki', 'teren_obejmuje'] %}
+          {% if key in wniosek_only_keys %}
+            {# Pola "tylko wniosek" - pokazuj tylko wartość z wniosku (read-only) #}
+            <div class="field" style="opacity: 0.7;">
+              <label{% if key in ['gmina', 'obreb', 'dzialki', 'teren_obejmuje'] %} class="required"{% endif %}>{{ label }}</label>
+              {% if key == 'teren_obejmuje' %}
+                <select disabled style="background: #f3f4f6;">
+                  <option value="cala" {% if comparison and comparison.get(key) and comparison[key].wniosek == 'cala' %}selected{% endif %}>CAŁĄ działkę/działki</option>
+                  <option value="czesc" {% if comparison and comparison.get(key) and comparison[key].wniosek == 'czesc' %}selected{% endif %}>CZĘŚĆ działki/działek</option>
+                </select>
+              {% else %}
+                <input type="text" value="{{ comparison[key].wniosek if comparison and comparison.get(key) else '' }}" readonly style="background: #f3f4f6;" />
+              {% endif %}
+              <span class="note" style="color: #6b7280; font-size: 11px;">(Kopiowane z wniosku)</span>
+            </div>
+          {% else %}
+            {% set mismatch = comparison and (not comparison[key].match) %}
+            <div class="field {% if mismatch %}mismatch{% endif %}">
+              <label{% if key in ['gmina', 'obreb', 'dzialki', 'teren_obejmuje'] %} class="required"{% endif %}>{{ label }}</label>
+              {% if key in long_text_keys %}
+                <textarea name="{{ key }}_analiza" rows="6">{{ comparison[key].analiza if comparison else '' }}</textarea>
+              {% else %}
+                <input type="text" name="{{ key }}_analiza" value="{{ comparison[key].analiza if comparison else '' }}" />
+              {% endif %}
+              {% if mismatch %}<span class="note">Różni się od wniosku</span>{% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Pozostałe pola -->
+    {% for key, label in labels.items() %}
+      {% if key not in ['wnioskodawca_mianownik', 'wnioskodawca_dopelniacz', 'wnioskodawca_adres', 'gmina', 'obreb', 'dzialki', 'teren_obejmuje', 'data_wykonania_analizy', 'data_zlozenia_wniosku', 'data_uzupelnienia_wniosku'] %}
+        {% if key in wniosek_only_keys %}
+          {# Pola "tylko wniosek" - pokazuj tylko wartość z wniosku (read-only) #}
+          <div class="field" style="opacity: 0.7;">
+            <label>{{ label }}</label>
+            <input type="text" value="{{ comparison[key].wniosek if comparison and comparison.get(key) else '' }}" readonly style="background: #f3f4f6;" />
+            <span class="note" style="color: #6b7280; font-size: 11px;">(Kopiowane z wniosku)</span>
+          </div>
+        {% else %}
+          {% set mismatch = comparison and (not comparison[key].match) %}
+          <div class="field {% if mismatch %}mismatch{% endif %}">
+            <label>{{ label }}</label>
+            {% if key in long_text_keys %}
+              <textarea name="{{ key }}_analiza" rows="6">{{ comparison[key].analiza if comparison else '' }}</textarea>
+            {% else %}
+              <input type="text" name="{{ key }}_analiza" value="{{ comparison[key].analiza if comparison else '' }}" />
+            {% endif %}
+            {% if mismatch %}<span class="note">Różni się od wniosku</span>{% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </form>
+</div>
+
+<!-- Przycisk Porównaj -->
+<div style="margin-top: 16px; display: flex; justify-content: center;">
+  <form method="post" action="/compare" style="display: inline-block;">
+    <input type="hidden" name="gmina" id="gmina_for_compare" value="{{ selected_gmina or (gminas[0] if gminas) }}" />
+    <input type="hidden" name="case_number" id="case_number_for_compare" value="{{ case_number or '' }}" />
+    <button type="submit" class="btn primary" style="padding: 12px 24px; font-size: 16px;">Porównaj</button>
+  </form>
+</div>
+
+<div class="panel" style="margin-top: 16px;">
+  <h3 style="margin: 0 0 12px; font-size: 16px; font-weight: 600;">Generowanie dokumentów</h3>
+  <div style="margin-bottom: 12px;">
+    <h4 style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #4b5563;">Analiza urbanistyczna:</h4>
+    <div class="actions">
+      <button type="button" class="btn primary" onclick="generateAnalysisDocx()">Generuj Analizę DOCX</button>
+      <button type="button" class="btn primary" onclick="generateAnalysisPdf()">Generuj Analizę PDF</button>
+    </div>
+  </div>
+  
+  <div>
+    <h4 style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #4b5563;">Projekt decyzji:</h4>
+    <div class="actions">
+      <button type="button" class="btn primary" onclick="generateDecisionDocx()">Generuj Decyzję DOCX</button>
+      <button type="button" class="btn primary" onclick="generateDecisionPdf()">Generuj Decyzję PDF</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="/static/app.js"></script>
+<script>
+// Automatyczne wypełnianie pola gmina przy zmianie dropdowna i synchronizacja z przyciskiem Porównaj
+document.addEventListener('DOMContentLoaded', function() {
+  const gminaSelect = document.getElementById('gmina');
+  const gminaInput = document.querySelector('input[name="gmina_wniosek"]');
+  const caseNumberInput = document.getElementById('case_number');
+  const gminaForCompare = document.getElementById('gmina_for_compare');
+  const caseNumberForCompare = document.getElementById('case_number_for_compare');
+  
+  // Synchronizuj gminę z polem gmina_wniosek i przyciskiem Porównaj
+  if (gminaSelect && gminaInput) {
+    gminaSelect.addEventListener('change', function() {
+      gminaInput.value = this.value;
+      if (gminaForCompare) gminaForCompare.value = this.value;
+    });
+    
+    // Wypełnij pole przy starcie
+    gminaInput.value = gminaSelect.value;
+  }
+  
+  // Synchronizuj numer sprawy z przyciskiem Porównaj
+  if (caseNumberInput && caseNumberForCompare) {
+    caseNumberInput.addEventListener('input', function() {
+      caseNumberForCompare.value = this.value;
+    });
+    
+    // Wypełnij przy starcie
+    caseNumberForCompare.value = caseNumberInput.value;
+  }
+
+  // Ustaw domyślną datę wykonania analizy na dzisiaj
+  const dataWykonaniaInput = document.getElementById('data_wykonania_analizy_wniosek');
+  if (dataWykonaniaInput && !dataWykonaniaInput.value) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    dataWykonaniaInput.value = `${yyyy}-${mm}-${dd}`;
+  }
+
+  // Walidacja dat - sprawdź czy data złożenia wniosku nie jest późniejsza niż data analizy
+  const dataZlozeniaInput = document.getElementById('data_zlozenia_wniosku_wniosek');
+  const validationNote = document.getElementById('data_validation_note');
+  
+  function validateDates() {
+    if (dataZlozeniaInput && dataWykonaniaInput && dataZlozeniaInput.value && dataWykonaniaInput.value) {
+      const dateZlozenia = new Date(dataZlozeniaInput.value);
+      const dateAnalizy = new Date(dataWykonaniaInput.value);
+      
+      if (dateZlozenia > dateAnalizy) {
+        validationNote.textContent = 'Data złożenia wniosku nie może być późniejsza niż data wykonania analizy';
+        dataZlozeniaInput.setCustomValidity('Data złożenia wniosku nie może być późniejsza niż data wykonania analizy');
+      } else {
+        validationNote.textContent = '';
+        dataZlozeniaInput.setCustomValidity('');
+      }
+    }
+  }
+  
+  if (dataZlozeniaInput && dataWykonaniaInput) {
+    dataZlozeniaInput.addEventListener('change', validateDates);
+    dataWykonaniaInput.addEventListener('change', validateDates);
+  }
+  
+  // Inicjalizacja przycisków zapisu/wczytywania
+  const saveCaseBtn = document.getElementById('save-case');
+  if (saveCaseBtn && window.WZApp && window.WZApp.saveToJSON) {
+    saveCaseBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.WZApp.saveToJSON();
+    });
+  }
+  
+  const saveToMemoryBtn = document.getElementById('save-to-memory');
+  if (saveToMemoryBtn && window.WZApp && window.WZApp.saveToMemory) {
+    saveToMemoryBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.WZApp.saveToMemory();
+    });
+  }
+  
+  const loadFromMemoryBtn = document.getElementById('load-from-memory');
+  if (loadFromMemoryBtn && window.WZApp && window.WZApp.loadFromMemory) {
+    loadFromMemoryBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.WZApp.loadFromMemory();
+    });
+  }
+  
+  // Automatycznie wczytaj z pamięci przy starcie
+  if (window.WZApp && window.WZApp.loadFromMemory) {
+    window.WZApp.loadFromMemory();
+  }
+
+  // Dynamiczne dodawanie dat uzupełnienia
+  let dataUzupelnieniaCounter = 1;
+  const dataUzupelnieniaContainer = document.getElementById('data-uzupelnienia-container');
+  const btnAddDataUzupelnienia = document.querySelector('.btn-add-data-uzupelnienia');
+  
+  // Funkcja walidacji daty uzupełnienia
+  function validateDataUzupelnienia(input) {
+    const validationNote = input.parentElement.querySelector('.date-validation-note');
+    
+    if (!input.value) {
+      if (validationNote) validationNote.remove();
+      input.setCustomValidity('');
+      return true;
+    }
+    
+    const currentDate = new Date(input.value);
+    let errorMessage = '';
+    
+    // 1. Pierwsza data nie może być wcześniejsza niż data złożenia wniosku
+    if (dataZlozeniaInput && dataZlozeniaInput.value) {
+      const dateZlozenia = new Date(dataZlozeniaInput.value);
+      if (currentDate < dateZlozenia) {
+        errorMessage = 'Data uzupełnienia nie może być wcześniejsza niż data złożenia wniosku';
+      }
+    }
+    
+    // 2. Data nie może być późniejsza niż data wykonania analizy
+    if (dataWykonaniaInput && dataWykonaniaInput.value) {
+      const dateAnalizy = new Date(dataWykonaniaInput.value);
+      if (currentDate > dateAnalizy) {
+        errorMessage = 'Data uzupełnienia nie może być późniejsza niż data wykonania analizy';
+      }
+    }
+    
+    // 3. Każda kolejna data nie może być wcześniejsza niż poprzednia
+    const allDateInputs = dataUzupelnieniaContainer.querySelectorAll('input[type="date"]');
+    for (let i = 0; i < allDateInputs.length; i++) {
+      if (allDateInputs[i] === input && i > 0) {
+        const prevDate = new Date(allDateInputs[i - 1].value);
+        if (currentDate < prevDate) {
+          errorMessage = 'Data uzupełnienia nie może być wcześniejsza niż poprzednia data';
+        }
+      }
+    }
+    
+    // Wyświetl komunikat błędu
+    if (errorMessage) {
+      if (!validationNote) {
+        const note = document.createElement('span');
+        note.className = 'date-validation-note';
+        note.style.cssText = 'color: var(--red); font-size: 12px; margin-top: 4px; display: block;';
+        input.parentElement.appendChild(note);
+      }
+      input.parentElement.querySelector('.date-validation-note').textContent = errorMessage;
+      input.setCustomValidity(errorMessage);
+    } else {
+      if (validationNote) validationNote.remove();
+      input.setCustomValidity('');
+    }
+    
+    return !errorMessage;
+  }
+  
+  if (dataUzupelnieniaContainer && btnAddDataUzupelnienia) {
+    // Funkcja dodawania nowego pola daty
+    function addDataUzupelnieniaField() {
+      const newInput = document.createElement('input');
+      newInput.type = 'date';
+      newInput.name = `data_uzupelnienia_wniosku_wniosek_${dataUzupelnieniaCounter}`;
+      newInput.style.marginTop = '8px';
+      newInput.style.display = 'block';
+      
+      // Dodaj walidację przy zmianie daty
+      newInput.addEventListener('change', function() {
+        validateDataUzupelnienia(this);
+      });
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.textContent = '× Usuń tę datę';
+      removeBtn.style.marginTop = '8px';
+      removeBtn.style.padding = '6px 10px';
+      removeBtn.style.fontSize = '12px';
+      removeBtn.style.cursor = 'pointer';
+      removeBtn.style.border = '1px solid var(--border)';
+      removeBtn.style.borderRadius = '6px';
+      removeBtn.style.background = 'white';
+      
+      const container = document.createElement('div');
+      container.appendChild(newInput);
+      container.appendChild(removeBtn);
+      
+      removeBtn.addEventListener('click', function() {
+        container.remove();
+        // Po usunięciu, sprawdź walidację pozostałych dat
+        const allDateInputs = dataUzupelnieniaContainer.querySelectorAll('input[type="date"]');
+        allDateInputs.forEach(input => validateDataUzupelnienia(input));
+      });
+      
+      dataUzupelnieniaContainer.appendChild(container);
+      dataUzupelnieniaCounter++;
+    }
+    
+    btnAddDataUzupelnienia.addEventListener('click', addDataUzupelnieniaField);
+    
+    // Dodaj walidację do pierwszego pola daty (jeśli istnieje)
+    const firstDateInput = dataUzupelnieniaContainer.querySelector('input[name="data_uzupelnienia_wniosku_wniosek"]');
+    if (firstDateInput) {
+      firstDateInput.addEventListener('change', function() {
+        validateDataUzupelnienia(this);
+      });
+    }
+    
+    // Dodaj walidację przy zmianie daty złożenia wniosku lub wykonania analizy
+    if (dataZlozeniaInput) {
+      dataZlozeniaInput.addEventListener('change', function() {
+        const allDateInputs = dataUzupelnieniaContainer.querySelectorAll('input[type="date"]');
+        allDateInputs.forEach(input => validateDataUzupelnienia(input));
+      });
+    }
+    
+    if (dataWykonaniaInput) {
+      dataWykonaniaInput.addEventListener('change', function() {
+        const allDateInputs = dataUzupelnieniaContainer.querySelectorAll('input[type="date"]');
+        allDateInputs.forEach(input => validateDataUzupelnienia(input));
+      });
+    }
+  }
+
+  // Dynamiczne dodawanie numerów działek
+  let dzialkaCounter = 1;
+  const dzialkiContainer = document.getElementById('dzialki-container');
+  if (dzialkiContainer) {
+    const btnAddDzialka = dzialkiContainer.querySelector('.btn-add-dzialka');
+    
+    if (btnAddDzialka) {
+      // Ukryj przycisk przy pierwszym polu (będzie dodany przy nowych polach)
+      const firstInput = dzialkiContainer.querySelector('input[name="dzialki_wniosek"]');
+      if (firstInput) {
+        const firstContainer = document.createElement('div');
+        firstContainer.appendChild(firstInput);
+        const firstBtn = btnAddDzialka.cloneNode(true);
+        firstContainer.appendChild(firstBtn);
+        dzialkiContainer.innerHTML = '';
+        dzialkiContainer.appendChild(firstContainer);
+      }
+      
+      // Funkcja dodawania nowego pola
+      function addDzialkaField() {
+        const newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.name = `dzialki_wniosek_${dzialkaCounter}`;
+        newInput.placeholder = 'np. 123/5';
+        newInput.style.marginTop = '8px';
+        newInput.style.display = 'inline-block';
+        newInput.style.width = '200px';
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = '×';
+        removeBtn.style.marginLeft = '8px';
+        removeBtn.style.padding = '6px 10px';
+        removeBtn.style.fontSize = '12px';
+        removeBtn.style.cursor = 'pointer';
+        
+        const container = document.createElement('div');
+        container.appendChild(newInput);
+        container.appendChild(removeBtn);
+        
+        dzialkiContainer.appendChild(container);
+        
+        // Usuń pole przy kliknięciu w ×
+        removeBtn.addEventListener('click', function() {
+          container.remove();
+        });
+        
+        dzialkaCounter++;
+      }
+      
+      // Dodaj obsługę kliknięcia do wszystkich przycisków (pierwotnego i nowych)
+      dzialkiContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-add-dzialka')) {
+          e.preventDefault();
+          addDzialkaField();
+        }
+      });
+    }
+  }
+});
+</script>
+{% endblock %}
+
+

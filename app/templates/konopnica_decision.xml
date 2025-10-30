@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DecisionTemplate municipality="Gmina Konopnica" version="1.0">
+  <Header>
+    <ReferenceNumber>Znak: {{case_number}}</ReferenceNumber>
+    <PlaceDate>{{wniosek_gmina}}, dnia {{wniosek_data}}</PlaceDate>
+    <Title>Decyzja o warunkach zabudowy (projekt)</Title>
+  </Header>
+
+  <LegalBase>
+    Na podstawie art. 61 ust. 1–6 ustawy z dnia 27 marca 2003 r. o planowaniu i zagospodarowaniu przestrzennym 
+    (t.j. Dz.U. z 2024 r. poz. 1130 ze zm.), Rozporządzenia Ministra Rozwoju i Technologii z dnia 15 lipca 2024 r. 
+    w sprawie ustalenia wymagań dotyczących nowej zabudowy i zagospodarowania terenu w przypadku braku miejscowego 
+    planu zagospodarowania przestrzennego (Dz.U. z 2024 r. poz. 1116) oraz art. 61 § 1–3 ustawy z dnia 14 czerwca 1960 r. 
+    Kodeks postępowania administracyjnego (t.j. Dz.U. z 2024 r. poz. 572), po rozpatrzeniu wniosku złożonego 
+    dnia {{data_wniosku}} oraz uzupełnionego dnia {{data_uzupełnienia}}, 
+  </LegalBase>
+
+  <Applicants>
+    Wnioskodawcy: {{wniosek_wnioskodawca_dopelniacz}}, {{wniosek_wnioskodawca_adres}}
+  </Applicants>
+
+  <Investment>
+    Dotyczącego: {{wniosek_rodzaj_inwestycji}} {{wniosek_opis_inwestycji}}
+  </Investment>
+
+  <Location>
+    Na terenie części działki o nr ewid. {{wniosek_dzialki}}, obręb {{wniosek_obreb}}, Gmina {{wniosek_gmina}}.
+  </Location>
+
+  <DecisionTitle>
+    USTALAM WARUNKI ZABUDOWY
+  </DecisionTitle>
+
+  <DecisionIntro>
+    Dla wnioskodawców: {{wniosek_wnioskodawca_dopelniacz}}, {{wniosek_wnioskodawca_adres_ulica}} {{wniosek_wnioskodawca_adres_nr}}, 
+    {{wniosek_wnioskodawca_adres_kod}} {{wniosek_wnioskodawca_adres_miejscowosc}}, dotyczących {{wniosek_rodzaj_inwestycji}} 
+    {{wniosek_opis_inwestycji}}, na terenie części działki o nr ewid. {{wniosek_dzialki}}, obręb {{wniosek_obreb}}, Gmina {{wniosek_gmina}}.
+  </DecisionIntro>
+
+  <Conditions>
+    <Point index="1" title="Rodzaj zabudowy">
+      {{wniosek_rodzaj_zabudowy}}
+    </Point>
+
+    <Point index="2" title="Funkcja zabudowy i zagospodarowania terenu">
+      <Subpoint index="a" title="sposób użytkowania obiektów budowlanych">
+        zgodnie z przeznaczeniem
+      </Subpoint>
+      <Subpoint index="b" title="sposób zagospodarowania terenu">
+        {{wniosek_opis_inwestycji}}, bezodpływowy zbiornik na nieczystości ciekłe lub przydomowa oczyszczalnia ścieków, 
+        wykonanie przyłączy do sieci infrastruktury technicznej, zjazd, dojazdy, dojścia, porządkowanie terenu, 
+        miejsce gromadzenia odpadów
+      </Subpoint>
+    </Point>
+
+    <Point index="3" title="Ustalenia - warunki i szczegółowe zasady zagospodarowania terenu oraz jego zabudowy wynikające z przepisów odrębnych">
+      <Subpoint index="2.1" title="Warunki kształtowania zabudowy oraz ochrony i kształtowania ładu przestrzennego">
+        <Item index="a">
+          <Label>Linia zabudowy:</Label>
+          <Text>{{wniosek_linia_zabudowy}}</Text>
+        </Item>
+        <Item index="b">
+          <Label>Wskaźnik powierzchni zabudowy:</Label>
+          <Text>{{wniosek_powierzchnia_zabudowy}}</Text>
+        </Item>
+        <Item index="c">
+          <Label>Maksymalna intensywność zabudowy:</Label>
+          <Text>{{wniosek_intensywnosc_zabudowy}}</Text>
+        </Item>
+        <Item index="d">
+          <Label>Nadziemna intensywność zabudowy:</Label>
+          <Text>{{wniosek_intensywnosc_zabudowy}}</Text>
+        </Item>
+        <Item index="e">
+          <Label>Udział powierzchni biologicznie czynnej:</Label>
+          <Text>minimum {{wniosek_powierzchnia_biologicznie_czynna}}</Text>
+        </Item>
+        <Item index="f">
+          <Label>Szerokość elewacji frontowej:</Label>
+          <Text>{{wniosek_szerokosc_elewacji_frontowej}}</Text>
+        </Item>
+        <Item index="g">
+          <Label>Wysokość zabudowy:</Label>
+          <Text>{{wniosek_wysokosc_zabudowy}}</Text>
+        </Item>
+        <Item index="h">
+          <Label>Ilość kondygnacji nadziemnych:</Label>
+          <Text>{{wniosek_liczba_kondygnacji}}</Text>
+        </Item>
+        <Item index="i">
+          <Label>Ilość kondygnacji podziemnych:</Label>
+          <Text>max. 1 kondygnacja</Text>
+        </Item>
+        <Item index="j">
+          <Label>Dopuszcza się sytuowanie garażu w bryle budynku:</Label>
+          <Text>tak</Text>
+        </Item>
+        <Item index="k">
+          <Label>Geometria dachu:</Label>
+          <Text>{{wniosek_kat_nachylenia_dachu}}</Text>
+        </Item>
+      </Subpoint>
+      <Subpoint index="2.2" title="Warunki ochrony środowiska, zdrowia i życia ludzi, przyrody i krajobrazu, gruntów rolnych i leśnych">
+        <Text>Zgodnie z przepisami odrębnymi oraz analizą urbanistyczną.</Text>
+      </Subpoint>
+      <Subpoint index="2.3" title="Warunki i wymagania ochrony dziedzictwa kulturowego, zabytków oraz dóbr kultury współczesnej">
+        <Text>Planowana inwestycja zlokalizowana jest poza terenami wymagającymi szczególnej ochrony konserwatorskiej.</Text>
+      </Subpoint>
+      <Subpoint index="2.4" title="Warunki obsługi w zakresie infrastruktury technicznej i komunikacji">
+        <Item index="a">
+          <Label>Wodociąg:</Label>
+          <Text>{{wniosek_woda}}</Text>
+        </Item>
+        <Item index="b">
+          <Label>Energia elektryczna:</Label>
+          <Text>{{wniosek_energia_elektr}}</Text>
+        </Item>
+        <Item index="c">
+          <Label>Ogrzewanie:</Label>
+          <Text>{{wniosek_ogrzewanie}}</Text>
+        </Item>
+        <Item index="d">
+          <Label>Gaz:</Label>
+          <Text>{{wniosek_gaz}}</Text>
+        </Item>
+        <Item index="e">
+          <Label>Odwodnienie:</Label>
+          <Text>{{wniosek_odwodnienie}}</Text>
+        </Item>
+        <Item index="f">
+          <Label>Ścieki:</Label>
+          <Text>{{wniosek_scieki}}</Text>
+        </Item>
+        <Item index="g">
+          <Label>Odpady:</Label>
+          <Text>{{wniosek_odpady}}</Text>
+        </Item>
+        <Item index="h">
+          <Label>Dostęp do drogi publicznej:</Label>
+          <Text>{{wniosek_dostep_droga_publiczna}}</Text>
+        </Item>
+        <Item index="i">
+          <Label>Miejsca parkingowe:</Label>
+          <Text>{{wniosek_miejsca_parkingowe}}</Text>
+        </Item>
+      </Subpoint>
+      <Subpoint index="2.5" title="Wymagania, dotyczące ochrony interesów osób trzecich">
+        <Text>Planowana inwestycja w trakcie realizacji i użytkowania nie może ograniczać korzystania z terenów sąsiednich 
+        zgodnie z ich przeznaczeniem. Wymaga się ochrony przed pozbawieniem dostępu do drogi publicznej, możliwości korzystania 
+        z urządzeń wodnych, kanalizacyjnych, energetycznych, grzewczych i łącznościowych, dostępu do światła dziennego w pomieszczeniach 
+        przeznaczonych na pobyt ludzi, uciążliwościami powodowanymi przez hałas, drgania, zakłócenia elektryczne, promieniowanie, 
+        pyły itp. - ograniczenie wszystkich uciążliwości do granic działki. Zanieczyszczeniem powietrza, wody i gleby. 
+        Niszczeniem istniejącej zieleni i drzewostanów.</Text>
+      </Subpoint>
+      <Subpoint index="2.6" title="Wymagania dotyczące ochrony terenów lub obiektów podlegających ochronie na podstawie przepisów odrębnych">
+        <Text>Planowana inwestycja nie jest zlokalizowana w obszarach, o których mowa w art. 169 ust. 2 pkt 2 ustawy 
+        z dnia 20 lipca 2017 r. Prawo wodne (t.j. Dz.U. z 2024 r. poz. 1087). Nie ustala się.</Text>
+      </Subpoint>
+      <Subpoint index="3" title="Postanowienie dodatkowe">
+        <Text>Niniejsza decyzja nie ustala w sposób ostateczny ostatecznego usytuowania obiektów budowlanych oraz innych 
+        rozwiązań projektowych zagospodarowania działki. Szczegóły zostaną ustalone w trakcie realizacji projektu budowlanego, 
+        zgodnie z ustawą z dnia 7 lipca 1994 r. Prawo budowlane (t.j. Dz.U. z 2025 r. poz. 418) oraz przepisami techniczno-budowlanymi, 
+        w tym Rozporządzeniem Ministra Infrastruktury w sprawie warunków technicznych, jakim powinny odpowiadać budynki i ich usytuowanie.</Text>
+      </Subpoint>
+      <Subpoint index="4" title="Granice obszaru objętego decyzją">
+        <Text>Granice obszaru objętego decyzją wyznaczają linie A-B-C-D na załączniku graficznym do decyzji.</Text>
+      </Subpoint>
+    </Point>
+  </Conditions>
+
+  <Justification>
+    <Title>UZASADNIENIE</Title>
+    <Text>
+      Wnioskodawcy {{wniosek_wnioskodawca_dopelniacz}} złożyli dnia {{data_wniosku}} (uzupełniony dnia {{data_uzupełnienia}}) 
+      wniosek o wydanie decyzji o warunkach zabudowy dotyczącej planowanej inwestycji polegającej na 
+      {{wniosek_rodzaj_inwestycji}} {{wniosek_opis_inwestycji}}, na terenie części działki o nr ewid. {{wniosek_dzialki}}, 
+      położonej w Gminie {{wniosek_gmina}}.
+    </Text>
+    <Text>
+      W toku postępowania administracyjnego wszczęto postępowanie w sprawie oznaczonej {{case_number}}, 
+      zgodnie z art. 61 § 4 ustawy z dnia 14 czerwca 1960 r. – Kodeks postępowania administracyjnego (t.j. Dz.U. z 2024 r. poz. 572).
+    </Text>
+    <Text>
+      W związku z brakiem miejscowego planu zagospodarowania przestrzennego dla obszaru objętego wnioskiem, 
+      warunki zabudowy działki ustalono na podstawie ustawy z dnia 27 marca 2003 r. o planowaniu i zagospodarowaniu 
+      przestrzennym (t.j. Dz.U. z 2024 r. poz. 1130 ze zm.) oraz zgodnie z Rozporządzeniem Ministra Rozwoju i Technologii 
+      z dnia 15 lipca 2024 r. w sprawie ustalenia wymagań dotyczących nowej zabudowy i zagospodarowania terenu w przypadku 
+      braku miejscowego planu zagospodarowania przestrzennego (Dz.U. z 2024 r. poz. 1116).
+    </Text>
+    <Text>
+      Planowana inwestycja spełnia łącznie warunki umożliwiające wydanie decyzji o warunkach zabudowy, określone w art. 61 ust. 1 
+      ustawy z dnia 27 marca 2003 r. o planowaniu i zagospodarowaniu przestrzennym.
+    </Text>
+    <Text>
+      Mając na uwadze powyższe, orzeczono jak w sentencji.
+    </Text>
+  </Justification>
+
+  <Instruction>
+    <Title>POUCZENIE</Title>
+    <Text>
+      Stronom przysługuje prawo wniesienia odwołania od niniejszej decyzji do Samorządowego Kolegium Odwoławczego w Lublinie, 
+      za pośrednictwem Wójta Gminy Konopnica, w terminie 14 dni od dnia doręczenia decyzji.
+    </Text>
+    <Text>
+      Strony mogą zrzec się prawa do odwołania. W przypadku doręczenia przez wszystkie strony oświadczenia o zrzeczeniu się prawa 
+      do odwołania na rzecz Wójta Gminy Konopnica, decyzja staje się ostateczna i prawomocna.
+    </Text>
+    <Text>
+      W razie gdy właściwy organ nie wyda decyzji o warunkach zabudowy w ciągu 90 dni od dnia złożenia wniosku, organ wyższego 
+      stopnia nałoży karę pieniężną w wysokości 500 zł za każdy tydzień zwłoki, w drodze uchwały (od której przysługuje odwołanie). 
+      Dochody z kar pieniężnych zasilają budżet państwa.
+    </Text>
+  </Instruction>
+
+  <AdditionalInfo>
+    <Title>DODATKOWE INFORMACJE:</Title>
+    <Item index="1">
+      <Text>Decyzja o warunkach zabudowy nie uprawnia do podejmowania jakichkolwiek działań, związanych z rozpoczęciem robót budowlanych.</Text>
+    </Item>
+    <Item index="2">
+      <Text>Niniejsza decyzja nie rodzi praw do terenu oraz nie narusza prawa własności i uprawnień osób trzecich (art.63 ust.2 ustawy z dnia 27 marca 2003r. o planowaniu i zagospodarowaniu przestrzennym).</Text>
+    </Item>
+    <Item index="3">
+      <Text>Zgodnie z przepisami art.63 ust.4 w/w ustawy wnioskodawcy, który nie uzyskał prawa do terenu, nie przysługuje roszczenie o zwrot nakładów, poniesionych w związku z otrzymaną decyzją, ustalającą warunki zabudowy.</Text>
+    </Item>
+    <Item index="4">
+      <Text>Decyzja może być przeniesiona na rzecz innej osoby, jeżeli przyjmuje ona wszystkie warunki zawarte w tej decyzji.</Text>
+    </Item>
+    <Item index="5">
+      <Text>Decyzja może ulec wygaśnięciu, jeżeli: a) inny wnioskodawca uzyskał pozwolenie na budowę, b) dla tego terenu uchwalony zostanie miejscowy plan zagospodarowania przestrzennego, którego ustalenia będą inne niż w wydanej decyzji (przepisu tego nie stosuje się, jeżeli została wydana ostateczna decyzja o pozwoleniu na budowę).</Text>
+    </Item>
+    <Item index="6">
+      <Text>Projekt budowlany winien być opracowany zgodnie z rozporządzeniem Ministra Infrastruktury z dnia 12 kwietnia 2002r. w sprawie warunków technicznych, jakim powinny odpowiadać budynki i ich usytuowanie (t.j. Dz.U.2022 r. poz. 1225 ze zm.) oraz zgodnie z art. 5 ustawy z dnia 7 lipca 1994 r. Prawo budowlane (t.j. Dz.U. 2025 r. poz. 418).</Text>
+    </Item>
+  </AdditionalInfo>
+
+  <Agreement>
+    <Title>Przedmiotowa inwestycja podlega uzgodnieniu:</Title>
+    <Item index="a">
+      <Text>zgodnie z art. 53, ust. 4 pkt 2a z właściwym organem Państwowej Inspekcji Sanitarnej - pod względem wymagań higienicznych i zdrowotnych,</Text>
+    </Item>
+    <Item index="b">
+      <Text>zgodnie z art. 53, ust. 4 pkt 5 z marszałkiem województwa w odniesieniu do udokumentowanych wód podziemnych,</Text>
+    </Item>
+    <Item index="c">
+      <Text>zgodnie z art. 53, ust.4 pkt 6 z organem właściwym w sprawach ochrony gruntów rolnych.</Text>
+    </Item>
+    <Note>(uwaga przygotowującego projekt decyzji: ważna odmowa uzgodnienia projektu decyzji przez którykolwiek organ skutkuje odmową wydania decyzji o warunkach zabudowy)</Note>
+    <Text>
+      W odniesieniu pozostałych organów, o których mowa w art. 53, ust.4 ustawy o planowaniu i zagospodarowaniu przestrzennym 
+      konieczność uzgodnienia nie zachodziła.
+    </Text>
+  </Agreement>
+
+  <Annexes>
+    <Title>Integralną część niniejszej decyzji stanowi:</Title>
+    <Item index="1">
+      <Text>załącznik Nr 1 - załącznik graficzny do decyzji sporządzony na mapie w skali 1:1000,</Text>
+    </Item>
+    <Item index="2">
+      <Text>załącznik Nr 2 - wyniki analizy funkcji oraz cech zabudowy i zagospodarowania terenu - część tekstowa i graficzna.</Text>
+    </Item>
+  </Annexes>
+
+  <Recipients>
+    <Title>Otrzymują:</Title>
+    <Item index="1">
+      <Text>Strony postępowania wg odrębnego wykazu</Text>
+    </Item>
+    <Item index="2">
+      <Text>a/a</Text>
+    </Item>
+  </Recipients>
+
+  <Footer>
+    <SignLine>......................................................</SignLine>
+    <SignHint>(podpis z podaniem imienia i nazwiska oraz stanowiska służbowego osoby pełniącej funkcję organu lub osoby upoważnionej)</SignHint>
+  </Footer>
+</DecisionTemplate>
+
